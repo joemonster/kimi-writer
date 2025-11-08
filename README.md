@@ -233,5 +233,18 @@ MIT License with Attribution Requirement - see [LICENSE](LICENSE) file for detai
 
 ## Star History
 
-[![Star History Chart](https://api.star-history.com/svg?repos=Doriandarko/kimi-writer&type=date&legend=top-left)](https://www.star-history.com/#Doriandarko/kimi-writer&type=date&legend=top-left)
+<picture>
+  <source
+    media="(prefers-color-scheme: dark)"
+    srcset="https://api.star-history.com/svg?repos=Doriandarko/kimi-writer&type=Date&theme=dark"
+  />
+  <source
+    media="(prefers-color-scheme: light)"
+    srcset="https://api.star-history.com/svg?repos=Doriandarko/kimi-writer&type=Date"
+  />
+  <img
+    alt="Star History Chart"
+    src="https://api.star-history.com/svg?repos=Doriandarko/kimi-writer&type=Date"
+  />
+</picture>
 
