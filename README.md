@@ -160,6 +160,7 @@ uv run kimi-writer.py "Write a comprehensive guide to Python programming with 15
 Watch the agent think and write in real-time:
 - 🧠 **Reasoning Stream**: See the agent's thought process as it plans
 - 💬 **Content Stream**: Watch stories being written character by character
+- 🔧 **Tool Call Progress**: Live updates when generating large content (shows character/word count)
 - ⚡ **No Waiting**: Immediate feedback - no more staring at a blank screen
 
 ### Iteration Counter

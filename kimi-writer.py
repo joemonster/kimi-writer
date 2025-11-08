@@ -299,6 +299,8 @@ def main():
             # Track if we've printed headers
             reasoning_header_printed = False
             content_header_printed = False
+            tool_call_header_printed = False
+            last_tool_index = -1
             
             # Process the stream
             for chunk in stream:
@@ -345,10 +347,22 @@ def main():
                             tool_calls_data.append({
                                 "id": None,
                                 "type": "function",
-                                "function": {"name": "", "arguments": ""}
+                                "function": {"name": "", "arguments": ""},
+                                "chars_received": 0
                             })
                         
                         tc = tool_calls_data[tc_delta.index]
+                        
+                        # Print header when we start receiving a tool call
+                        if tc_delta.index != last_tool_index:
+                            if reasoning_header_printed or content_header_printed:
+                                print("\n" + "=" * 60 + "\n")
+                            
+                            if hasattr(tc_delta, "function") and tc_delta.function.name:
+                                print(f"🔧 Preparing tool call: {tc_delta.function.name}")
+                                print("─" * 60)
+                                tool_call_header_printed = True
+                                last_tool_index = tc_delta.index
                         
                         if tc_delta.id:
                             tc["id"] = tc_delta.id
@@ -357,10 +371,22 @@ def main():
                                 tc["function"]["name"] = tc_delta.function.name
                             if tc_delta.function.arguments:
                                 tc["function"]["arguments"] += tc_delta.function.arguments
+                                tc["chars_received"] += len(tc_delta.function.arguments)
+                                
+                                # Show progress indicator every 500 characters
+                                if tc["chars_received"] % 500 == 0 or tc["chars_received"] < 100:
+                                    # Calculate approximate words (rough estimate: 5 chars per word)
+                                    words = tc["chars_received"] // 5
+                                    print(f"\r💬 Generating arguments... {tc['chars_received']:,} characters (~{words:,} words)", end="", flush=True)
             
             # Print closing for content if it was printed
             if content_header_printed:
                 print("\n" + "-" * 60 + "\n")
+            
+            # Print completion for tool calls if any were received
+            if tool_call_header_printed:
+                print("\n✓ Tool call complete")
+                print("─" * 60 + "\n")
             
             # Reconstruct the message object from accumulated data
             class ReconstructedMessage:
